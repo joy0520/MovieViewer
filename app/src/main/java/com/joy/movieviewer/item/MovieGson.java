@@ -3,7 +3,7 @@ package com.joy.movieviewer.item;
 import java.util.ArrayList;
 
 /**
- * Created by joy05 on 2017/2/15.
+ * Created by joy0520 on 2017/2/15.
  */
 
 public class MovieGson {
@@ -12,6 +12,7 @@ public class MovieGson {
 
     public class Result {
         public String poster_path;
+        public String backdrop_path;
         public String overview;
         public String title;
         public float vote_average;
@@ -24,6 +25,7 @@ public class MovieGson {
         for (Result result : results) {
             builder.append("\n")
                     .append("poster_path : ").append(result.poster_path)
+                    .append(", backdrop_path : ").append(result.backdrop_path)
                     .append(", vote_average : ").append(result.vote_average)
                     .append(", title : ").append(result.title)
                     .append(", overview : ").append(result.overview)

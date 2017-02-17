@@ -5,7 +5,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 /**
- * Created by joy05 on 2017/2/15.
+ * Created by joy0520 on 2017/2/15.
  */
 
 public class MTDbRestClient {
@@ -15,16 +15,16 @@ public class MTDbRestClient {
     private static final String URL_SUFFIX;
 
     static {
-        URL_SUFFIX = "?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
+        URL_SUFFIX = "?api_key=";
     }
 
     private static AsyncHttpClient sClient = new AsyncHttpClient();
 
-    public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        sClient.get(getAbsoluteUrl(url), params, responseHandler);
+    public static void get(String key, String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        sClient.get(getAbsoluteUrl(key, url), params, responseHandler);
     }
 
-    private static String getAbsoluteUrl(String relativeUrl) {
-        return BASE_URL + relativeUrl + URL_SUFFIX;
+    private static String getAbsoluteUrl(String key, String relativeUrl) {
+        return BASE_URL + relativeUrl + URL_SUFFIX + key;
     }
 }

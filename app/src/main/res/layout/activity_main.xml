@@ -4,12 +4,13 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/movie_viewer_activity_padding"
     tools:context="com.joy.movieviewer.MovieViewer">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
+        android:background="@drawable/list_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="4dp"
         android:scrollbars="vertical" />
 </RelativeLayout>
