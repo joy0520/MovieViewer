@@ -2,6 +2,7 @@ package com.joy.movieviewer;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,8 +14,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.joy.movieviewer.item.MovieGson;
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,11 +90,17 @@ public class MovieListAdapter extends RecyclerView.Adapter {
             String imageUrl = mContext.getResources().getConfiguration().orientation
                     == Configuration.ORIENTATION_PORTRAIT ?
                     movie.poster_path : movie.backdrop_path;
+            Transformation transformation = new RoundedTransformationBuilder()
+                    .borderColor(Color.WHITE)
+                    .borderWidthDp(3)
+                    .oval(false)
+                    .build();
             // Load image using Picasso library.
             Picasso.with(mContext)
                     .load(getFullImageUrl(imageUrl))
                     .fit()
                     .centerInside()
+                    .transform(transformation) // rounded corner transformation
                     .placeholder(R.drawable.gohan)
                     .error(R.drawable.gohan)
                     .into(movieHolder.image, new Callback() {
