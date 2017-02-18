@@ -2,22 +2,27 @@ package com.joy.movieviewer;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
 import com.joy.movieviewer.item.MovieGson;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class MovieViewer extends Activity {
 
+    @BindView(R.id.list)
+    RecyclerView mList;
+
     private String mMtdbApiKey;
 
-    private RecyclerView mList;
+//    private RecyclerView mList;
     private MovieGson mMovieGson;
 
     @Override
@@ -61,7 +66,8 @@ public class MovieViewer extends Activity {
     private void updateResources() {
         mMtdbApiKey = getString(R.string.mtdb_api_key);
 
-        mList = (RecyclerView) findViewById(R.id.list);
+        ButterKnife.bind(this);
+//        mList = (RecyclerView) findViewById(R.id.list);
         // Set an adapter with empty data
         mList.setAdapter(new MovieListAdapter(this));
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this);

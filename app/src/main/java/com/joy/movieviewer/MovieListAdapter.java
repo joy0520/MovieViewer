@@ -2,6 +2,7 @@ package com.joy.movieviewer;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,10 +13,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.joy.movieviewer.item.MovieGson;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by joy0520 on 2017/2/16.
@@ -25,20 +30,28 @@ public class MovieListAdapter extends RecyclerView.Adapter {
     public static final int ITEM_TYPE_NORMAL = 0;
     public static final int ITEM_TYPE_HOT = 1;
 
-    private static class MovieViewHolder extends RecyclerView.ViewHolder {
-        public ImageView image;
-        public ProgressBar image_progress;
-        public TextView title, overview;
+    static class MovieViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.image)
+        ImageView image;
+        @BindView(R.id.image_progress)
+        ProgressBar imageProgress;
+        @Nullable
+        @BindView(R.id.title)
+        TextView title;
+        @Nullable
+        @BindView(R.id.overview)
+        TextView overview;
 
         MovieViewHolder(View itemView) {
             super(itemView);
-            if (itemView instanceof ViewGroup) {
-                ViewGroup viewGroup = (ViewGroup) itemView;
-                image = (ImageView) viewGroup.findViewById(R.id.image);
-                image_progress = (ProgressBar) viewGroup.findViewById(R.id.image_progress);
-                title = (TextView) viewGroup.findViewById(R.id.title);
-                overview = (TextView) viewGroup.findViewById(R.id.overview);
-            }
+//            if (itemView instanceof ViewGroup) {
+//                ViewGroup viewGroup = (ViewGroup) itemView;
+//                image = (ImageView) viewGroup.findViewById(R.id.image);
+//                imageProgress = (ProgressBar) viewGroup.findViewById(R.id.image_progress);
+//                title = (TextView) viewGroup.findViewById(R.id.title);
+//                overview = (TextView) viewGroup.findViewById(R.id.overview);
+//            }
+            ButterKnife.bind(this, itemView);
         }
     }
 
@@ -81,11 +94,11 @@ public class MovieListAdapter extends RecyclerView.Adapter {
                     .centerInside()
                     .placeholder(R.drawable.gohan)
                     .error(R.drawable.gohan)
-                    .into(movieHolder.image, new com.squareup.picasso.Callback() {
+                    .into(movieHolder.image, new Callback() {
                         @Override
                         public void onSuccess() {
                             // Hide progress bar once the image loaded successfully.
-                            movieHolder.image_progress.setVisibility(View.GONE);
+                            movieHolder.imageProgress.setVisibility(View.GONE);
                         }
 
                         @Override
