@@ -2,27 +2,27 @@
 
 Flicks shows the latest movies currently playing in theaters. The app utilizes the Movie Database API to display images and basic information about these movies to the user.
 
-Time spent: 7 hours spent in total
+Time spent: 9 hours spent in total
 
 ## User Stories
 
 The following **required** functionality is completed:
 
-* [V] User can **scroll through current movies** from the Movie Database API
-* [V] Layout is optimized with the [ViewHolder](http://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView#improving-performance-with-the-viewholder-pattern) pattern.
-* [V] For each movie displayed, user can see the following details:
-  * [V] Title, Poster Image, Overview (Portrait mode)
-  * [V] Title, Backdrop Image, Overview (Landscape mode)
+* [.] User can **scroll through current movies** from the Movie Database API
+* [.] Layout is optimized with the [ViewHolder](http://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView#improving-performance-with-the-viewholder-pattern) pattern.
+* [.] For each movie displayed, user can see the following details:
+  * [.] Title, Poster Image, Overview (Portrait mode)
+  * [.] Title, Backdrop Image, Overview (Landscape mode)
 
 The following **optional** features are implemented:
 
-* [V] Display a nice default [placeholder graphic](http://guides.codepath.com/android/Displaying-Images-with-the-Picasso-Library#configuring-picasso) for each image during loading.
-* [V] Improved the user interface through styling and coloring.
+* [.] Display a nice default [placeholder graphic](http://guides.codepath.com/android/Displaying-Images-with-the-Picasso-Library#configuring-picasso) for each image during loading.
+* [.] Improved the user interface through styling and coloring.
 
 The following **bonus** features are implemented:
 
 * [ ] Allow user to view details of the movie including ratings and popularity within a separate activity or dialog fragment.
-* [ ] When viewing a popular movie (i.e. a movie voted for more than 5 stars) the video should show the full backdrop image as the layout.  Uses [Heterogenous ListViews](http://guides.codepath.com/android/Implementing-a-Heterogenous-ListView) or [Heterogenous RecyclerView](http://guides.codepath.com/android/Heterogenous-Layouts-inside-RecyclerView) to show different layouts.
+* [.] When viewing a popular movie (i.e. a movie voted for more than '7' stars) the video should show the full backdrop image as the layout.  Uses [Heterogenous ListViews](http://guides.codepath.com/android/Implementing-a-Heterogenous-ListView) or [Heterogenous RecyclerView](http://guides.codepath.com/android/Heterogenous-Layouts-inside-RecyclerView) to show different layouts. (I adjust the criteria to 7 since almost all the now-playing movies has vote more than 5.)
 * [ ] Allow video trailers to be played in full-screen using the YouTubePlayerView.
     * [ ] Overlay a play icon for videos that can be played.
     * [ ] More popular movies should start a separate activity that plays the video immediately.
@@ -33,7 +33,7 @@ The following **bonus** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [X] 1 hour try to make the list remain the same position after roattion or other configuration changed, but failed.
 
 ## Video Walkthrough
 
@@ -54,7 +54,7 @@ Describe any challenges encountered while building the app.
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright [2017] [Flicks]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

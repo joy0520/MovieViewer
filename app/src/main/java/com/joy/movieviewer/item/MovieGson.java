@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 
 public class MovieGson {
+    public static final int HOT_MOVIE_VOTE_CRITERIA = 7;
     public int page;
     public ArrayList<Result> results = new ArrayList<>();
 

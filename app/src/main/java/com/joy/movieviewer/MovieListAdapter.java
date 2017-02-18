@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.joy.movieviewer.item.MovieGson;
@@ -21,9 +22,12 @@ import java.util.List;
  */
 
 public class MovieListAdapter extends RecyclerView.Adapter {
+    public static final int ITEM_TYPE_NORMAL = 0;
+    public static final int ITEM_TYPE_HOT = 1;
 
     private static class MovieViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
+        public ProgressBar image_progress;
         public TextView title, overview;
 
         MovieViewHolder(View itemView) {
@@ -31,6 +35,7 @@ public class MovieListAdapter extends RecyclerView.Adapter {
             if (itemView instanceof ViewGroup) {
                 ViewGroup viewGroup = (ViewGroup) itemView;
                 image = (ImageView) viewGroup.findViewById(R.id.image);
+                image_progress = (ProgressBar) viewGroup.findViewById(R.id.image_progress);
                 title = (TextView) viewGroup.findViewById(R.id.title);
                 overview = (TextView) viewGroup.findViewById(R.id.overview);
             }
@@ -47,8 +52,10 @@ public class MovieListAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // TODO different item layout due to orientation
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_movie, parent, false);
+        // TODO different item layout due to a movie's rate
+        View view = LayoutInflater.from(mContext).inflate(
+                viewType == ITEM_TYPE_NORMAL ? R.layout.item_movie : R.layout.item_movie_hot
+                , parent, false);
         return new MovieViewHolder(view);
     }
 
@@ -62,7 +69,7 @@ public class MovieListAdapter extends RecyclerView.Adapter {
         if (mMovies == null) return;
         MovieGson.Result movie = mMovies.get(position);
         if (holder instanceof MovieViewHolder) {
-            MovieViewHolder movieHolder = (MovieViewHolder) holder;
+            final MovieViewHolder movieHolder = (MovieViewHolder) holder;
             // Load different image by orientation.
             String imageUrl = mContext.getResources().getConfiguration().orientation
                     == Configuration.ORIENTATION_PORTRAIT ?
@@ -74,17 +81,32 @@ public class MovieListAdapter extends RecyclerView.Adapter {
                     .centerInside()
                     .placeholder(R.drawable.gohan)
                     .error(R.drawable.gohan)
-                    .into(movieHolder.image);
+                    .into(movieHolder.image, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            // Hide progress bar once the image loaded successfully.
+                            movieHolder.image_progress.setVisibility(View.GONE);
+                        }
 
-            movieHolder.title.setText(movie.title);
-            movieHolder.overview.setText(movie.overview);
+                        @Override
+                        public void onError() {
+                            // do nothing
+                        }
+                    });
+
+            if (movie.vote_average < MovieGson.HOT_MOVIE_VOTE_CRITERIA) {
+                movieHolder.title.setText(movie.title);
+                movieHolder.overview.setText(movie.overview);
+            }
         }
 
     }
 
     @Override
     public int getItemViewType(int position) {
-        return super.getItemViewType(position);
+        if (mMovies.get(position).vote_average < MovieGson.HOT_MOVIE_VOTE_CRITERIA)
+            return ITEM_TYPE_NORMAL;
+        else return ITEM_TYPE_HOT;
     }
 
     @Override

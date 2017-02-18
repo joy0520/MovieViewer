@@ -1,8 +1,8 @@
 package com.joy.movieviewer;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,7 +14,8 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import cz.msebera.android.httpclient.Header;
 
 public class MovieViewer extends Activity {
-    private static String MTDB_KEY;
+
+    private String mMtdbApiKey;
 
     private RecyclerView mList;
     private MovieGson mMovieGson;
@@ -38,8 +39,27 @@ public class MovieViewer extends Activity {
         super.onPause();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
     private void updateResources() {
-        MTDB_KEY = getString(R.string.mtdb_api_key);
+        mMtdbApiKey = getString(R.string.mtdb_api_key);
 
         mList = (RecyclerView) findViewById(R.id.list);
         // Set an adapter with empty data
@@ -50,7 +70,7 @@ public class MovieViewer extends Activity {
 
     private void queryMtdb(String query) {
         //TODO
-        MTDbRestClient.get(MTDB_KEY, query/*"movie/now_playing"*/, null, new TextHttpResponseHandler() {
+        MTDbRestClient.get(mMtdbApiKey, query/*"movie/now_playing"*/, null, new TextHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBytes) {
                 super.onSuccess(statusCode, headers, responseBytes);
@@ -63,8 +83,8 @@ public class MovieViewer extends Activity {
                 Log.i("joy.onSuccess()", "responseString=" + responseString);
                 mMovieGson = gson.fromJson(responseString, MovieGson.class);
                 Log.i("joy.onSuccess()", "mMovieGson=" + mMovieGson);
-//                mList.setAdapter(new MovieListAdapter(MovieViewer.this, mMovieGson));
-                ((MovieListAdapter)mList.getAdapter()).setMovieGson(mMovieGson);
+                // Give list updated data.
+                ((MovieListAdapter) mList.getAdapter()).setMovieGson(mMovieGson);
             }
 
             @Override
