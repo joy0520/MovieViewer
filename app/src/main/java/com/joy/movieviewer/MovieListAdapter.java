@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.joy.movieviewer.detail.MovieDetailActivity;
 import com.joy.movieviewer.detail.MoviePlayerActivity;
 import com.joy.movieviewer.item.MovieGson;
 import com.joy.movieviewer.item.MovieVedioGson;
@@ -49,11 +51,14 @@ public class MovieListAdapter extends RecyclerView.Adapter {
         ImageView image;
         @BindView(R.id.image_progress)
         ProgressBar imageProgress;
-        @Nullable @BindView(R.id.title)
+        @Nullable
+        @BindView(R.id.title)
         TextView title;
-        @Nullable @BindView(R.id.overview)
+        @Nullable
+        @BindView(R.id.overview)
         TextView overview;
-        @Nullable @BindView(R.id.ic_play)
+        @Nullable
+        @BindView(R.id.ic_play)
         ImageView ic_play;
 
         MovieViewHolder(View itemView) {
@@ -62,12 +67,35 @@ public class MovieListAdapter extends RecyclerView.Adapter {
         }
     }
 
-    static class MovieItemDecor extends RecyclerView.ItemDecoration {
-        @Override
-        public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-            super.onDrawOver(c, parent, state);
-        }
-    }
+//    static class MovieItemDecor extends RecyclerView.ItemDecoration {
+//        private Drawable drawable;
+//        private Context context;
+//
+//        public MovieItemDecor(Context context) {
+//            this.context = context;
+//            drawable = context.getResources().getDrawable(R.drawable.list_item_odd_bg);
+//        }
+//
+//        @Override
+//        public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+////            super.onDrawOver(c, parent, state);
+//            final int left = parent.getPaddingLeft();
+//            final int right = parent.getWidth() - parent.getPaddingRight();
+//
+//            final int childCount = parent.getChildCount();
+//            for (int i = 0; i < childCount; i++) {
+//                if (i % 2 != 0) { // odd items
+//                    final View child = parent.getChildAt(i);
+//                    final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
+//                            .getLayoutParams();
+//                    final int top = child.getTop();
+//                    final int bottom = child.getBottom();
+//                    drawable.setBounds(left, top, right, bottom);
+//                    drawable.draw(c);
+//                }
+//            }
+//        }
+//    }
 
     private Context mContext;
     private List<MovieGson.Result> mMovies;
@@ -140,9 +168,24 @@ public class MovieListAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Log.i("movieHolder.overview", "onClick");
-                    queryMtdbYoutubeMovieKey(movie.id);
+                    if (movie.vote_average < MovieGson.HOT_MOVIE_VOTE_CRITERIA) { // normal movie
+                        Intent intent = new Intent(mContext, MovieDetailActivity.class);
+                        intent.putExtra(MovieDetailActivity.EXTRA_MOVIE_ID, movie.id);
+                        intent.putExtra(MovieDetailActivity.EXTRA_PREVIEW_URL, movie.backdrop_path);
+                        intent.putExtra(MovieDetailActivity.EXTRA_TITLE, movie.title);
+                        intent.putExtra(MovieDetailActivity.EXTRA_RATING, movie.vote_average);
+                        intent.putExtra(MovieDetailActivity.EXTRA_OVERVIEW, movie.overview);
+                        intent.putExtra(MovieDetailActivity.EXTRA_POPULARITY, movie.popularity);
+                        mContext.startActivity(intent);
+                    } else { // popular movie
+                        queryMtdbYoutubeMovieKey(movie.id);
+                    }
                 }
             });
+            // Different item bg for odd items
+            if (position % 2 != 0) {
+                movieHolder.continaer.setBackgroundColor(mContext.getResources().getColor(R.color.list_item_odd_bg));
+            }
         }
 
     }
@@ -166,31 +209,30 @@ public class MovieListAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    private String getFullImageUrl(String imageUrl) {
-        return "https://image.tmdb.org/t/p/original" + imageUrl;
+    public static String getFullImageUrl(String imageUrl) {
+        return "https://image.tmdb.org/t/p/w780" + imageUrl;
     }
 
     private void queryMtdbYoutubeMovieKey(int movieId) {
         MTDbRestClient.getYoutubeMovieKey(mContext.getString(R.string.mtdb_api_key),
                 movieId, null, new TextHttpResponseHandler() {
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.i("joy.onFailure()", "responseString=" + responseString);
-            }
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("joy.onFailure()", "responseString=" + responseString);
+                    }
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                Gson gson = new Gson();
-                Log.i("joy.onSuccess()", "responseString=" + responseString);
-                MovieVedioGson movieVedioGson = gson.fromJson(responseString, MovieVedioGson.class);
-                Log.i("joy.onSuccess()", "movieVedioGson=" + movieVedioGson);
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Gson gson = new Gson();
+                        Log.i("joy.onSuccess()", "responseString=" + responseString);
+                        MovieVedioGson movieVedioGson = gson.fromJson(responseString, MovieVedioGson.class);
+                        Log.i("joy.onSuccess()", "movieVedioGson=" + movieVedioGson);
 
-                // TODO Go to movie detail activity or movie player activity
-                Intent intent = new Intent(mContext, MoviePlayerActivity.class);
-                intent.putExtra(BUNDLE_KEY_VIDEO_URL, movieVedioGson.results.get(0).key);
-                mContext.startActivity(intent);
-            }
-        });
+                        Intent intent = new Intent(mContext, MoviePlayerActivity.class);
+                        intent.putExtra(BUNDLE_KEY_VIDEO_URL, movieVedioGson.results.get(0).key);
+                        mContext.startActivity(intent);
+                    }
+                });
 
     }
 }

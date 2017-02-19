@@ -18,6 +18,7 @@ public class MovieGson {
         public String title;
         public float vote_average;
         public int id;
+        public float popularity;
     }
 
     @Override
@@ -32,6 +33,7 @@ public class MovieGson {
                     .append(", title : ").append(result.title)
                     .append(", overview : ").append(result.overview)
                     .append(", id : ").append(result.id)
+                    .append(", popularity : ").append(result.popularity)
                     .append("}");
         }
         builder.append("]");

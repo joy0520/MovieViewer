@@ -48,12 +48,11 @@ public class MovieViewer extends Activity {
         mMtdbApiKey = getString(R.string.mtdb_api_key);
 
         ButterKnife.bind(this);
-//        mList = (RecyclerView) findViewById(R.id.list);
         // Set up the list view
         mList.setAdapter(new MovieListAdapter(this));
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
         mList.setLayoutManager(manager);
-//        mList.addOnItemTouchListener(new MovieListItemTouchListener());
+//        mList.addItemDecoration(new MovieListAdapter.MovieItemDecor(this));
     }
 
     private void queryMtdb(String query) {
@@ -73,38 +72,4 @@ public class MovieViewer extends Activity {
             }
         });
     }
-
-    class MovieListItemTouchListener implements RecyclerView.OnItemTouchListener {
-        private int itemPosition = -1;
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-//            Log.i("joy.MovieListItemTouchListener.onInterceptTouchEvent()", "" + e);
-            if (e.getAction() == MotionEvent.ACTION_DOWN) {
-                itemPosition = rv.getChildAdapterPosition(rv.findChildViewUnder(e.getX(), e.getY()));
-                Log.i("joy.MovieListItemTouchListener.onInterceptTouchEvent()", "DOWN itemPosition="+itemPosition);
-            }
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-            if (e.getAction() == MotionEvent.ACTION_UP) {
-                int item = rv.getChildAdapterPosition(rv.findChildViewUnder(e.getX(), e.getY()));
-                Log.i("joy.MovieListItemTouchListener.onTouchEvent()", "UP itemPosition="+itemPosition+", item="+item);
-                if (item == itemPosition && mMovieGson.results != null
-                        && mMovieGson.results.size() > itemPosition) {
-
-//                    queryMtdbYoutubeMovieKey(mMovieGson.results.get(itemPosition).id);
-                }
-                itemPosition = -1;
-            }
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-        }
-    }
-
 }

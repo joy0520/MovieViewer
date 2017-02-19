@@ -5,5 +5,12 @@
     <color name="colorAccent">#FF4081</color>
 
     <drawable name="list_bg">#000000</drawable>
+    <color name="list_item_odd_bg">#393838</color>
+    <color name="list_item_title">#FFFFFFFF</color>
+    <color name="list_item_overview">#99FFFFFF</color>
     <color name="play_icon_color">#a0000000</color>
+
+    <drawable name="detail_bg">@drawable/list_bg</drawable>
+    <color name="detail_title_color">#FFFFFF</color>
+    <color name="detail_overview_color">#99FFFFFF</color>
 </resources>

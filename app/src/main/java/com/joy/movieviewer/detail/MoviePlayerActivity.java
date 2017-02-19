@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 public class MoviePlayerActivity extends YouTubeBaseActivity {
     public static final String BUNDLE_KEY_VIDEO_URL = "movie_player_activity_bundle_key_video_url";
 
-    private String mVideoUrl = null;
+    private String mVideoKey = null;
     @BindView(R.id.player)
     YouTubePlayerView mPlayer;
 
@@ -29,17 +29,16 @@ public class MoviePlayerActivity extends YouTubeBaseActivity {
         setContentView(R.layout.activity_movie_player);
         ButterKnife.bind(this);
 
-        mVideoUrl = getIntent().getExtras().getString(BUNDLE_KEY_VIDEO_URL);
-        Log.i("MoviePlayerActivity.onCreate()", "mVideoUrl="+mVideoUrl);
+        mVideoKey = getIntent().getExtras().getString(BUNDLE_KEY_VIDEO_URL);
 
-        if (mVideoUrl != null && !mVideoUrl.isEmpty()) {
+        if (mVideoKey != null && !mVideoKey.isEmpty()) {
             mPlayer.initialize(getResources().getString(R.string.youtube_api_key),
                     new YouTubePlayer.OnInitializedListener() {
                         @Override
                         public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                            if (mVideoUrl != null || !mVideoUrl.isEmpty()) {
+                            if (mVideoKey != null || !mVideoKey.isEmpty()) {
                                 youTubePlayer.setFullscreen(true);
-                                youTubePlayer.cueVideo(mVideoUrl);
+                                youTubePlayer.cueVideo(mVideoKey);
                             }
                         }
 

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="16dp">
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -35,14 +36,14 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFFFF"
+            android:textColor="@color/list_item_title"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/overview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#99FFFFFF" />
+            android:textColor="@color/list_item_overview" />
 
     </LinearLayout>
 
