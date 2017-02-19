@@ -17,6 +17,7 @@ public class MovieGson {
         public String overview;
         public String title;
         public float vote_average;
+        public int id;
     }
 
     @Override
@@ -24,12 +25,13 @@ public class MovieGson {
         StringBuilder builder = new StringBuilder("MovieGson [");
         builder.append("page ").append(page);
         for (Result result : results) {
-            builder.append("\n")
+            builder.append("\n{")
                     .append("poster_path : ").append(result.poster_path)
                     .append(", backdrop_path : ").append(result.backdrop_path)
                     .append(", vote_average : ").append(result.vote_average)
                     .append(", title : ").append(result.title)
                     .append(", overview : ").append(result.overview)
+                    .append(", id : ").append(result.id)
                     .append("}");
         }
         builder.append("]");

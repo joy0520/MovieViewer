@@ -4,5 +4,6 @@
     <style name="AppTheme" parent="android:Theme.Holo.Light.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
+    <style name="MoviePlayerTheme" parent="android:Theme.Holo.Light.Dialog.NoActionBar"/>
 
 </resources>

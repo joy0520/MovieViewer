@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
 
     <drawable name="list_bg">#000000</drawable>
+    <color name="play_icon_color">#a0000000</color>
 </resources>
